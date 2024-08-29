@@ -25,6 +25,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.8",
     "nodemon": "^3.0.2",
+    "pdf-poppler": "^0.2.1",
     "pdfkit": "^0.15.0",
     "sanitize-filename": "^1.6.3",
     "socket.io": "^4.7.5",

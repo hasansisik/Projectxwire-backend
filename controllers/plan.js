@@ -5,6 +5,9 @@ const { StatusCodes } = require("http-status-codes");
 const { ref, uploadBytes, getDownloadURL } = require("firebase/storage");
 const { storage } = require("../config");
 const sanitize = require("sanitize-filename");
+const pdfPoppler = require("pdf-poppler");
+const path = require("path");
+const fs = require("fs");
 
 const turkishToEnglish = (str) => {
   return str
@@ -44,9 +47,36 @@ const createPlan = async (req, res) => {
 
   try {
     let imageBuffer = planImages.buffer;
-
     let safeFileName = turkishToEnglish(planImages.originalname);
     safeFileName = sanitize(safeFileName);
+
+    // Eğer dosya PDF ise JPG'ye dönüştür
+    if (planImages.mimetype === "application/pdf") {
+      const tempDir = path.join(__dirname, "../temp");
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir);
+      }
+
+      const tempPdfPath = path.join(tempDir, safeFileName);
+      fs.writeFileSync(tempPdfPath, planImages.buffer);
+
+      const options = {
+        format: "jpeg",
+        out_dir: tempDir,
+        out_prefix: path.basename(tempPdfPath, path.extname(tempPdfPath)),
+        page: null,
+      };
+
+      await pdfPoppler.convert(tempPdfPath, options);
+
+      const jpgFilePath = path.join(tempDir, `${options.out_prefix}-1.jpg`);
+      imageBuffer = fs.readFileSync(jpgFilePath);
+      safeFileName = `${options.out_prefix}-1.jpg`;
+
+      // Geçici dosyaları temizle
+      fs.unlinkSync(tempPdfPath);
+      fs.unlinkSync(jpgFilePath);
+    }
 
     const storageRef = ref(storage, `PlanwirePlan/${safeFileName}`);
     await uploadBytes(storageRef, imageBuffer);
