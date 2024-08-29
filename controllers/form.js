@@ -53,7 +53,7 @@ const createForm = async (req, res) => {
 
     doc.fillColor("black").moveTo(50, 120).lineTo(150, 120).stroke();
 
-    doc.fillColor("red").fontSize(20).text(formTitle, 225, 96);
+    doc.fillColor("red").fontSize(20).text(formTitle, 215, 96);
 
     // Balck Line
     doc.fillColor("black").moveTo(200, 120).lineTo(550, 120).stroke();
