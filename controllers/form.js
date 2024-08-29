@@ -52,7 +52,7 @@ const createForm = async (req, res) => {
       responseType: "arraybuffer",
     });
     const logoBuffer = Buffer.from(response.data, "binary");
-    doc.image(logoBuffer, 50, 0, { width: 100});
+    doc.image(logoBuffer, 50, 0, { width: 100 });
     doc.moveDown(2);
 
     // Date and Title
@@ -83,28 +83,29 @@ const createForm = async (req, res) => {
     doc
       .font("public/fonts/medium.otf")
       .fontSize(12)
-      .text("Görseller:", 50, 475);
+      .text("Elektronik İmza:", 50, 525);
 
-    const signatureY = 500;
+    const signatureY = 550;
     // Left signature box
     doc.rect(50, signatureY, 250, 100).stroke();
     doc
       .font("public/fonts/bold.otf")
       .fontSize(10)
-      .text(formCreators.name, 150, signatureY + 40);
+      .text(formCreators.name, 150, signatureY + 50);
     // Right signature box
     doc.rect(300, signatureY, 250, 100).stroke();
     doc
       .font("public/fonts/bold.otf")
       .fontSize(10)
-      .text(formPersons.name, 300, signatureY + 40, { align: "center" });
+      .text(formPersons.name, 300, signatureY + 50, { align: "center" });
 
-    const columnY = signatureY + 120;
     doc
       .font("public/fonts/regular.otf")
       .fontSize(10)
-      .text("Hazırlayan", 150, columnY);
-    doc.fontSize(10).text("Onaylayan", 300, columnY, { align: "center" });
+      .text("Hazırlayan", 150, signatureY + 30);
+    doc
+      .fontSize(10)
+      .text("Onaylayan", 300, signatureY + 30, { align: "center" });
 
     // Footer
     doc.fillColor("black").moveTo(50, 710).lineTo(425, 710).stroke();
