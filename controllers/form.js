@@ -42,6 +42,7 @@ const createForm = async (req, res) => {
         .populate("formPerson");
       res.status(StatusCodes.CREATED).json(newForms);
     });
+    doc.font("public/fonts/medium.otf");
 
     doc.image("public/planwirelogo.png", 50, 45, { width: 100 });
     doc.moveDown(2);
@@ -59,46 +60,57 @@ const createForm = async (req, res) => {
 
     // Description section
     doc
+      .font("public/fonts/medium.otf")
       .moveDown(1)
       .fontSize(12)
       .fillColor("black")
       .text("Açıklamalar:", 50, doc.y + 20);
     doc
+      .font("public/fonts/regular.otf")
       .moveDown(0.5)
       .fontSize(10)
       .text(formDescription || "[Metni buradan başlatın.]", 50, doc.y + 10);
 
     // Images and signature section
-    doc.fontSize(12).text("Görseller:", 50, 475)
+    doc.fontSize(12).text("Görseller:", 50, 475);
 
     const signatureY = 500;
     // Left signature box
     doc.rect(50, signatureY, 250, 100).stroke();
-    doc.fontSize(10).text(formCreators.name, 150, signatureY + 40);
+    doc
+      .font("public/fonts/bold.otf")
+      .fontSize(10)
+      .text(formCreators.name, 150, signatureY + 40);
     // Right signature box
     doc.rect(300, signatureY, 250, 100).stroke();
     doc
+      .font("public/fonts/bold.otf")
       .fontSize(10)
       .text(formPersons.name, 300, signatureY + 40, { align: "center" });
 
     const columnY = signatureY + 120;
-    doc.fontSize(10).text("Hazırlayan", 150, columnY);
+    doc
+      .font("public/fonts/regular.otf")
+      .fontSize(10)
+      .text("Hazırlayan", 150, columnY);
     doc.fontSize(10).text("Onaylayan", 300, columnY, { align: "center" });
 
     // Footer
     doc.fillColor("black").moveTo(50, 710).lineTo(425, 710).stroke();
 
-    doc.fontSize(8).text("Telefon", 50, 720);
-    doc.text("Adres", 150, 720);
-    doc.text("E-posta", 340, 720);
+    doc.font("public/fonts/bold.otf").fontSize(8).text("Telefon", 50, 720);
+    doc.font("public/fonts/bold.otf").text("Adres", 150, 720);
+    doc.font("public/fonts/bold.otf").text("E-posta", 340, 720);
 
     doc.fontSize(8).text("+90 532 351 06 87", 50, 730);
-    doc.text(
-      "Merkez Efendi Mh. Mevlana Cd. Tercuman Sit. Bina: A6 No: 26 Zeytinburnu/İstanbul",
-      150,
-      730,
-      { width: 175 }
-    );
+    doc
+      .font("public/fonts/regular.otf")
+      .text(
+        "Merkez Efendi Mh. Mevlana Cd. Tercuman Sit. Bina: A6 No: 26 Zeytinburnu/İstanbul",
+        150,
+        730,
+        { width: 175 }
+      );
     doc.text("destek@planwire.com", 340, 730);
 
     doc
