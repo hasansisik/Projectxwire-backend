@@ -8,6 +8,7 @@ const { ref, uploadBytes, getDownloadURL } = require("firebase/storage");
 const { storage } = require("../config");
 const PDFDocument = require("pdfkit");
 const { Buffer } = require("buffer");
+const axios = require("axios");
 
 const createForm = async (req, res) => {
   const { formCategory, formTitle, formDescription, formPerson, formCreator } =
@@ -16,6 +17,9 @@ const createForm = async (req, res) => {
   try {
     const formCreators = await User.findById(formCreator);
     const formPersons = await User.findById(formPerson);
+
+    console.log(project.logo);
+
     const doc = new PDFDocument({ size: "A4", margin: 50 });
     const buffers = [];
     doc.on("data", buffers.push.bind(buffers));
@@ -44,7 +48,11 @@ const createForm = async (req, res) => {
     });
     doc.font("public/fonts/medium.otf");
 
-    doc.image("public/planwirelogo.png", 50, 45, { width: 100 });
+    const response = await axios.get(project.logo, {
+      responseType: "arraybuffer",
+    });
+    const logoBuffer = Buffer.from(response.data, "binary");
+    doc.image(logoBuffer, 50, 0, { width: 100});
     doc.moveDown(2);
 
     // Date and Title
