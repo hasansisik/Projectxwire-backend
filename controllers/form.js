@@ -53,7 +53,7 @@ const createForm = async (req, res) => {
 
     doc.fillColor("black").moveTo(50, 120).lineTo(150, 120).stroke();
 
-    doc.fillColor("red").fontSize(24).text(formTitle, 225, 100);
+    doc.fillColor("red").fontSize(20).text(formTitle, 225, 96);
 
     // Balck Line
     doc.fillColor("black").moveTo(200, 120).lineTo(550, 120).stroke();
@@ -72,7 +72,10 @@ const createForm = async (req, res) => {
       .text(formDescription || "[Metni buradan başlatın.]", 50, doc.y + 10);
 
     // Images and signature section
-    doc.fontSize(12).text("Görseller:", 50, 475);
+    doc
+      .font("public/fonts/medium.otf")
+      .fontSize(12)
+      .text("Görseller:", 50, 475);
 
     const signatureY = 500;
     // Left signature box
@@ -102,7 +105,10 @@ const createForm = async (req, res) => {
     doc.font("public/fonts/bold.otf").text("Adres", 150, 720);
     doc.font("public/fonts/bold.otf").text("E-posta", 340, 720);
 
-    doc.fontSize(8).text("+90 532 351 06 87", 50, 730);
+    doc
+      .font("public/fonts/regular.otf")
+      .fontSize(8)
+      .text("+90 532 351 06 87", 50, 730);
     doc
       .font("public/fonts/regular.otf")
       .text(
@@ -119,7 +125,7 @@ const createForm = async (req, res) => {
       .lineTo(425, doc.y + 15)
       .stroke();
 
-    doc.image("public/planwirelogo.png", 450, 720, { width: 100 });
+    doc.image("public/planwirelogo.png", 450, 715, { width: 100 });
 
     doc.end();
   } catch (error) {
