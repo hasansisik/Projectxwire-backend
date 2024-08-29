@@ -69,9 +69,9 @@ const createForm = async (req, res) => {
       .text(formDescription || "[Metni buradan başlatın.]", 50, doc.y + 10);
 
     // Images and signature section
-    doc.moveDown(6).fontSize(12).text("Görseller:", 50);
+    doc.fontSize(12).text("Görseller:", 50, 475)
 
-    const signatureY = doc.y + 20;
+    const signatureY = 500;
     // Left signature box
     doc.rect(50, signatureY, 250, 100).stroke();
     doc.fontSize(10).text(formCreators.name, 150, signatureY + 40);
@@ -86,15 +86,28 @@ const createForm = async (req, res) => {
     doc.fontSize(10).text("Onaylayan", 300, columnY, { align: "center" });
 
     // Footer
+    doc.fillColor("black").moveTo(50, 710).lineTo(425, 710).stroke();
+
     doc.fontSize(8).text("Telefon", 50, 720);
     doc.text("Adres", 150, 720);
-    doc.text("E-posta", 250, 720);
+    doc.text("E-posta", 340, 720);
+
+    doc.fontSize(8).text("+90 532 351 06 87", 50, 730);
+    doc.text(
+      "Merkez Efendi Mh. Mevlana Cd. Tercuman Sit. Bina: A6 No: 26 Zeytinburnu/İstanbul",
+      150,
+      730,
+      { width: 175 }
+    );
+    doc.text("destek@planwire.com", 340, 730);
+
     doc
       .fillColor("black")
-      .moveTo(50, doc.y + 10)
-      .lineTo(550, doc.y + 10)
+      .moveTo(50, doc.y + 15)
+      .lineTo(425, doc.y + 15)
       .stroke();
-    doc.image("public/planwirelogo.png", 450, 700, { width: 100 });
+
+    doc.image("public/planwirelogo.png", 450, 720, { width: 100 });
 
     doc.end();
   } catch (error) {

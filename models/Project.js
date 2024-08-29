@@ -6,6 +6,15 @@ const ProjectSchema = new Schema(
     projectName: { type: String, required: true },
     projectCode: { type: String },
     address: { type: String },
+    phoneNumber: {
+      type: String,
+      validate: {
+        validator: function (v) {
+          return /^(\+90|0)?5\d{9}$/.test(v);
+        },
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
+    },
     logo: {
       type: String,
       default:
