@@ -8,10 +8,17 @@ const CustomError = require("../errors");
 const sendNotification = require("../helpers/sendNotification");
 
 const createTask = async (req, res) => {
-  const { taskCategory, taskTitle, persons, plan, taskCreator } = req.body;
+  const { taskCategory, taskTitle, taskTopic, taskCreator, persons, plan } = req.body;
   const project = await Project.findById(req.params.projectId);
 
-  if (!taskCategory || !taskTitle || !taskCreator || !persons || !plan) {
+  if (
+    !taskCategory ||
+    !taskTitle ||
+    !taskTopic ||
+    !taskCreator ||
+    !persons ||
+    !plan
+  ) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ success: false, error: "All fields are required" });
@@ -23,6 +30,7 @@ const createTask = async (req, res) => {
     const task = new Task({
       taskCategory,
       taskTitle,
+      taskTopic,
       taskCreator,
       persons: Array.isArray(persons) ? persons : [persons],
       plan: plan,
