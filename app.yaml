@@ -1,0 +1,13 @@
+runtime: nodejs14
+
+env_variables:
+  MONGO_URL: "mongodb+srv://planwireapp:7me2JYDgaew6mKFX@cluster0.st1jzvg.mongodb.net/Planwire?retryWrites=true&w=majority&ssl=true"
+  JWT_SECRET: "!skjasdasdjk.123123#12313."
+  JWT_EXPIRE: "2d"
+  ACCESS_TOKEN_SECRET: "E3rsW2sBQfmyVWdUrQQB4NVUVDXXaCPEJXRmhEcZF69Z6Nwrp8"
+  REFRESH_TOKEN_SECRET: "XURfdMvPWDEzsqjfAW6J2HRqHaDyHLm36Ek2qH5xX4hAHgTyrb"
+  SMTP_HOST: "smtp.gmail.com"
+  SMTP_PORT: "587"
+  SMTP_USER: "planwireapp@gmail.com"
+  SMTP_PASS: "nnpx dcoa ychx sinb"
+  CLIENT_ENDPOINT: "http://localhost:3050"
