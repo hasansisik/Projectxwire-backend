@@ -1,3 +1,4 @@
+//Form Controller
 const Form = require("../models/Form");
 const Project = require("../models/Project");
 const User = require("../models/User");
@@ -15,7 +16,7 @@ const createForm = async (req, res) => {
   try {
     const formCreators = await User.findById(formCreator);
     const formPersons = await User.findById(formPerson);
-    const doc = new PDFDocument();
+    const doc = new PDFDocument({ size: "A4", margin: 50 });
     const buffers = [];
     doc.on("data", buffers.push.bind(buffers));
     doc.on("end", async () => {
@@ -23,7 +24,6 @@ const createForm = async (req, res) => {
       const pdfFileName = `${formTitle.replace(/\s+/g, "_")}.pdf`;
       const pdfRef = ref(storage, `forms/${pdfFileName}`);
       await uploadBytes(pdfRef, pdfBuffer);
-
       const pdfUrl = await getDownloadURL(pdfRef);
       const formCount = await Form.countDocuments({ project: project._id });
       const newForm = new Form({
@@ -36,53 +36,71 @@ const createForm = async (req, res) => {
         document: pdfUrl,
         project: project,
       });
-
       await newForm.save();
-
       const newForms = await Form.findById(newForm._id)
         .populate("formCreator")
         .populate("formPerson");
-
       res.status(StatusCodes.CREATED).json(newForms);
     });
-    doc.font("public/fonts/medium.otf");
-    const currentDate = new Date().toLocaleDateString("tr-TR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-    doc.fontSize(10).text(currentDate,{ align: "right" });
-    doc
-      .font("public/fonts/bold.otf")
-      .fontSize(20)
-      .text(formTitle, { align: "center" });
-    doc.moveDown(1);
-    doc.font("public/fonts/regular.otf");
-    doc.fontSize(15).text(`Kategori: ${formCategory}`, { align: "center" });
-    doc.moveDown(1);
-    doc.fontSize(15).text(`Açıklama: ${formDescription}`, { align: "center" });
+
+    doc.image("public/planwirelogo.png", 50, 45, { width: 100 });
     doc.moveDown(2);
-    const creatorTextWidth = doc.widthOfString(
-      `Oluşturan: ${formCreators.name}`
-    );
-    const signerTextWidth = doc.widthOfString(`İmzalayan: ${formPersons.name}`);
-    const totalWidth = creatorTextWidth + signerTextWidth + 10; 
+
+    // Date and Title
+    const currentDate = new Date().toLocaleDateString("tr-TR");
+    doc.fillColor("black").fontSize(14).text(currentDate, 60, 100);
+
+    doc.fillColor("black").moveTo(50, 120).lineTo(150, 120).stroke();
+
+    doc.fillColor("red").fontSize(24).text(formTitle, 225, 100);
+
+    // Balck Line
+    doc.fillColor("black").moveTo(200, 120).lineTo(550, 120).stroke();
+
+    // Description section
     doc
-      .font("public/fonts/bold.otf")
-      .fontSize(14)
-      .text(
-        `Oluşturan: ${formCreators.name}`,
-        (doc.page.width - totalWidth) / 2,
-        doc.y,
-        { continued: true }
-      );
-    doc.text(` İmzalayan: ${formPersons.name}`, { align: "right" });
+      .moveDown(1)
+      .fontSize(12)
+      .fillColor("black")
+      .text("Açıklamalar:", 50, doc.y + 20);
+    doc
+      .moveDown(0.5)
+      .fontSize(10)
+      .text(formDescription || "[Metni buradan başlatın.]", 50, doc.y + 10);
+
+    // Images and signature section
+    doc.moveDown(6).fontSize(12).text("Görseller:", 50);
+
+    const signatureY = doc.y + 20;
+    // Left signature box
+    doc.rect(50, signatureY, 250, 100).stroke();
+    doc.fontSize(10).text(formCreators.name, 150, signatureY + 40);
+    // Right signature box
+    doc.rect(300, signatureY, 250, 100).stroke();
+    doc
+      .fontSize(10)
+      .text(formPersons.name, 300, signatureY + 40, { align: "center" });
+
+    const columnY = signatureY + 120;
+    doc.fontSize(10).text("Hazırlayan", 150, columnY);
+    doc.fontSize(10).text("Onaylayan", 300, columnY, { align: "center" });
+
+    // Footer
+    doc.fontSize(8).text("Telefon", 50, 720);
+    doc.text("Adres", 150, 720);
+    doc.text("E-posta", 250, 720);
+    doc
+      .fillColor("black")
+      .moveTo(50, doc.y + 10)
+      .lineTo(550, doc.y + 10)
+      .stroke();
+    doc.image("public/planwirelogo.png", 450, 700, { width: 100 });
+
     doc.end();
   } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).json({
-      success: false,
-      error: error.message,
-    });
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ success: false, error: error.message });
   }
 };
 
