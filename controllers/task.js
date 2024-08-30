@@ -8,13 +8,13 @@ const CustomError = require("../errors");
 const sendNotification = require("../helpers/sendNotification");
 
 const createTask = async (req, res) => {
-  const { taskCategory, taskTitle, taskTopic, taskCreator, persons, plan } = req.body;
+  const { taskCategory, taskTitle, taskDesc, taskCreator, persons, plan } = req.body;
   const project = await Project.findById(req.params.projectId);
 
   if (
     !taskCategory ||
     !taskTitle ||
-    !taskTopic ||
+    !taskDesc ||
     !taskCreator ||
     !persons ||
     !plan
@@ -30,7 +30,7 @@ const createTask = async (req, res) => {
     const task = new Task({
       taskCategory,
       taskTitle,
-      taskTopic,
+      taskDesc,
       taskCreator,
       persons: Array.isArray(persons) ? persons : [persons],
       plan: plan,

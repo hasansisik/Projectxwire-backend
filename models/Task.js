@@ -15,7 +15,7 @@ const TaskSchema = new Schema(
     number: { type: Number },
     taskCategory: { type: String },
     taskTitle: { type: String },
-    taskTopic: { type: String },
+    taskDesc: { type: String },
     taskCreator: { type: Schema.Types.ObjectId, ref: "User" },
     persons: [{ type: Schema.Types.ObjectId, ref: "User" }],
     plan: { type: Schema.Types.ObjectId, ref: "Plan" },
