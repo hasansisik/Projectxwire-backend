@@ -45,7 +45,7 @@ app.use("/v1/search", searchRouter);
 app.use(notFoundMiddleware);
 app.use(erorHandlerMiddleware);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3040;
 
 const start = async () => {
   await connectDB(process.env.MONGO_URL);
