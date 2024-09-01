@@ -5,6 +5,10 @@ const { StatusCodes } = require("http-status-codes");
 const { ref, uploadBytes, getDownloadURL } = require("firebase/storage");
 const { storage } = require("../config");
 const sanitize = require("sanitize-filename");
+var convertapi = require("convertapi")("secret_HVAv6C03H5rsOl6s");
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
 
 const turkishToEnglish = (str) => {
   return str
@@ -46,10 +50,40 @@ const createPlan = async (req, res) => {
     let imageBuffer = planImages.buffer;
     let safeFileName = turkishToEnglish(planImages.originalname);
     safeFileName = sanitize(safeFileName);
+    let downloadURL;
 
-    const storageRef = ref(storage, `PlanwirePlan/${safeFileName}`);
-    await uploadBytes(storageRef, imageBuffer);
-    const downloadURL = await getDownloadURL(storageRef);
+    if (planImages.mimetype === "application/pdf") {
+      // Geçici dosya yolları
+      const tmpDir = os.tmpdir();
+      const pdfPath = path.join(tmpDir, safeFileName);
+      const jpgPath = path.join(tmpDir, `${safeFileName}.jpg`);
+
+      // PDF dosyasını geçici dizine yazma
+      await fs.promises.writeFile(pdfPath, imageBuffer);
+
+      // PDF'i JPEG'e dönüştürme
+      const convertResult = await convertapi.convert(
+        "jpg",
+        { File: pdfPath },
+        "pdf"
+      );
+      const convertedFile = await convertResult.file.save(jpgPath);
+
+      // JPEG dosyasını Firebase Storage'a yükleme
+      const storageRef = ref(storage, `PlanwirePlan/${safeFileName}.jpg`);
+      const convertedBuffer = await fs.promises.readFile(jpgPath);
+      await uploadBytes(storageRef, convertedBuffer);
+      downloadURL = await getDownloadURL(storageRef);
+
+      // Geçici dosyaları temizleme
+      await fs.promises.unlink(pdfPath);
+      await fs.promises.unlink(jpgPath);
+    } else {
+      // JPEG'i direkt olarak Firebase Storage'a yükleme
+      const storageRef = ref(storage, `PlanwirePlan/${safeFileName}`);
+      await uploadBytes(storageRef, imageBuffer);
+      downloadURL = await getDownloadURL(storageRef);
+    }
 
     const plan = new Plan({
       planCategory,
@@ -75,6 +109,7 @@ const createPlan = async (req, res) => {
     });
   }
 };
+
 
 const getPlans = async (req, res) => {
   try {
