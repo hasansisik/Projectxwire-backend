@@ -61,7 +61,7 @@ const start = async () => {
   const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
-      origin: ["http://localhost:3000", "http://192.168.1.37:8081"], 
+      origin: "*", 
       methods: ["GET", "POST"],
     },
   });
