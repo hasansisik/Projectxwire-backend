@@ -13,12 +13,11 @@ const axios = require("axios");
 const createForm = async (req, res) => {
   const { formCategory, formTitle, formDescription, formPerson, formCreator } =
     req.body;
+
   const project = await Project.findById(req.params.projectId);
   try {
     const formCreators = await User.findById(formCreator);
     const formPersons = await User.findById(formPerson);
-
-    console.log(project.logo);
 
     const doc = new PDFDocument({ size: "A4", margin: 50 });
     const buffers = [];
@@ -126,7 +125,7 @@ const createForm = async (req, res) => {
         730,
         { width: 175 }
       );
-    doc.text("destek@planwire.com", 340, 730);
+    doc.text("info@planwire.app", 340, 730);
 
     doc
       .fillColor("black")
