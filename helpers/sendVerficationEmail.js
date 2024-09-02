@@ -9,7 +9,7 @@ const sendVerificationEmail = async ({
 
   return sendEmail({
     to: email,
-    subject: 'Kurstanbul Mail Doğrulama',
+    subject: 'Planwire Mail Doğrulama',
     html: `<h4> Merhaba, ${name}</h4>
     ${message}
     `,
