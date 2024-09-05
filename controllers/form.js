@@ -125,7 +125,7 @@ const createForm = async (req, res) => {
         730,
         { width: 175 }
       );
-    doc.text("info@planwire.app", 340, 730);
+    doc.text("info@projectxwire.com", 340, 730);
 
     doc
       .fillColor("black")
@@ -133,7 +133,7 @@ const createForm = async (req, res) => {
       .lineTo(425, doc.y + 15)
       .stroke();
 
-    doc.image("public/planwirelogo.png", 450, 715, { width: 100 });
+    doc.image("public/logo-black.png", 450, 715, { width: 100 });
 
     doc.end();
   } catch (error) {

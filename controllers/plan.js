@@ -53,34 +53,27 @@ const createPlan = async (req, res) => {
     let downloadURL;
 
     if (planImages.mimetype === "application/pdf") {
-      // Geçici dosya yolları
       const tmpDir = os.tmpdir();
       const pdfPath = path.join(tmpDir, safeFileName);
       const jpgPath = path.join(tmpDir, `${safeFileName}.jpg`);
 
-      // PDF dosyasını geçici dizine yazma
       await fs.promises.writeFile(pdfPath, imageBuffer);
 
-      // PDF'i JPEG'e dönüştürme
       const convertResult = await convertapi.convert(
         "jpg",
         { File: pdfPath },
         "pdf"
       );
       const convertedFile = await convertResult.file.save(jpgPath);
-
-      // JPEG dosyasını Firebase Storage'a yükleme
-      const storageRef = ref(storage, `PlanwirePlan/${safeFileName}.jpg`);
+      const storageRef = ref(storage, `ProjectxwirePlan/${safeFileName}.jpg`);
       const convertedBuffer = await fs.promises.readFile(jpgPath);
       await uploadBytes(storageRef, convertedBuffer);
       downloadURL = await getDownloadURL(storageRef);
 
-      // Geçici dosyaları temizleme
       await fs.promises.unlink(pdfPath);
       await fs.promises.unlink(jpgPath);
     } else {
-      // JPEG'i direkt olarak Firebase Storage'a yükleme
-      const storageRef = ref(storage, `PlanwirePlan/${safeFileName}`);
+      const storageRef = ref(storage, `ProjectxwirePlan/${safeFileName}`);
       await uploadBytes(storageRef, imageBuffer);
       downloadURL = await getDownloadURL(storageRef);
     }
