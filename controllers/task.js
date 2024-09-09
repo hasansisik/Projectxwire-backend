@@ -5,7 +5,7 @@ const User = require("../models/User");
 const Plan = require("../models/Plan");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
-const sendPushNotification = require("../helpers/sendNotification");
+const sendNotification = require("../helpers/sendNotification");
 
 const createTask = async (req, res) => {
   const { taskCategory, taskTitle, taskDesc, taskCreator, persons, plan } =
@@ -46,15 +46,16 @@ const createTask = async (req, res) => {
       .populate("persons")
       .populate("plan");
 
-    // Bildirim gönderme
-    const user = await User.findById(taskCreator);
-    if (user && user.expoPushToken) {
-      await sendPushNotification(
-        user.expoPushToken,
-        "Yeni Görev",
-        "Yeni bir görev oluşturuldu."
-      );
-    }
+    // Notification Send
+    const message = `Yeni bir göreve eklendiniz: ${taskTitle}`;
+    (Array.isArray(persons) ? persons : [persons]).forEach(async (person) => {
+      const user = await User.findById(person);
+      if (user && user.expoPushToken) {
+        await sendNotification(user.expoPushToken, message);
+      } else {
+        console.log("expoPushToken bulunamadı."); // Error handling
+      }
+    });
 
     res.status(StatusCodes.CREATED).json(tasks);
   } catch (error) {
