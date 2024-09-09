@@ -9,7 +9,6 @@ const { generateToken } = require("../services/token.service");
 //Email
 const verifyEmail = async (req, res) => {
   const { email, verificationCode } = req.body;
-
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -383,6 +382,7 @@ const allUsers = async (req, res) => {
 //Send Notification
 const sendPushNotification = async (req, res) => {
   const { userId, expoPushToken } = req.body;
+  console.log("expoPushToken:", expoPushToken);
 
   try {
     const user = await User.findById(userId);
