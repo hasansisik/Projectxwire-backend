@@ -382,9 +382,12 @@ const allUsers = async (req, res) => {
 //Send Notification
 const sendPushNotification = async (req, res) => {
   const { userId, expoPushToken } = req.body;
-  console.log("expoPushToken:", expoPushToken);
+  console.log("expoPushToken backend:", expoPushToken);
+  console.log("userId backend:", userId);
   try {
     const user = await User.findById(userId);
+
+    console.log("user backend:", user);
 
     if (!user) {
       return res.status(404).json({ message: "Kullanıcı bulunamadı." });
