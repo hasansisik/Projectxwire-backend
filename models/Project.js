@@ -25,6 +25,10 @@ const ProjectSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
     },
+    status : {
+      type : Boolean,
+      default : true
+    }
   },
   { timestamps: true }
 );

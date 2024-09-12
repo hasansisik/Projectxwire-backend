@@ -55,6 +55,10 @@ const UserSchema = new Schema(
     passwordToken: { type: Number },
     passwordTokenExpirationDate: { type: String },
     expoPushToken: { type: String },
+    status: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

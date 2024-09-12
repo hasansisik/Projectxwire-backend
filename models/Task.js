@@ -21,6 +21,10 @@ const TaskSchema = new Schema(
     plan: { type: Schema.Types.ObjectId, ref: "Plan" },
     project: { type: Schema.Types.ObjectId, ref: "Project" },
     messages: [MessageSchema],
+    status: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );
