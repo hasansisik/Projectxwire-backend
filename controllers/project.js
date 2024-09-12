@@ -2,7 +2,8 @@
 const Project = require("../models/Project");
 
 const createProject = async (req, res, next) => {
-  const { projectName, projectCode, address, logo, companyId } = req.body;
+  const { projectName, projectCode, address, logo, companyId, finishDate } =
+    req.body;
 
   if (!projectName || !projectCode ) {
     return res.status(400).json({
@@ -17,6 +18,7 @@ const createProject = async (req, res, next) => {
       projectCode,
       address,
       logo,
+      finishDate,
       company: companyId,
     });
 

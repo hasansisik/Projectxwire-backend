@@ -25,10 +25,13 @@ const ProjectSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
     },
-    status : {
-      type : Boolean,
-      default : true
-    }
+    status: {
+      type: Boolean,
+      default: true,
+    },
+    finishDate: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );
