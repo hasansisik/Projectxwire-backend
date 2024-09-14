@@ -16,6 +16,7 @@ const connectDB = require("./config/connectDB");
 //routers
 const authRouter = require("./routers/auth");
 const companyRouter = require("./routers/company");
+const siteRouter = require("./routers/site");
 const projectRouter = require("./routers/project");
 const planRouter = require("./routers/plan");
 const taskRouter = require("./routers/task");
@@ -36,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/v1/auth", authRouter);
 app.use("/v1/company", companyRouter);
+app.use("/v1/site", siteRouter);
 app.use("/v1/project", projectRouter);
 app.use("/v1/plan", planRouter);
 app.use("/v1/task", taskRouter);

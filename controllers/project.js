@@ -2,7 +2,7 @@
 const Project = require("../models/Project");
 
 const createProject = async (req, res, next) => {
-  const { projectName, projectCode, address, logo, companyId, finishDate } =
+  const { projectName, projectCode,projectCategory, address, companyId,siteId, finishDate } =
     req.body;
 
   if (!projectName || !projectCode ) {
@@ -16,9 +16,10 @@ const createProject = async (req, res, next) => {
     const project = new Project({
       projectName,
       projectCode,
+      projectCategory,
       address,
-      logo,
       finishDate,
+      site: siteId,
       company: companyId,
     });
 
@@ -33,9 +34,12 @@ const createProject = async (req, res, next) => {
 };
 
 const getProjects = async (req, res) => {
-  const { companyId } = req.body;
+  const { companyId, siteId } = req.body;
   try {
-    const projects = await Project.find({ company: companyId });
+    const projects = await Project.find({
+      company: companyId,
+      site: siteId,
+    }).populate("site");
 
     if (!projects.length) {
       return res.status(404).json({

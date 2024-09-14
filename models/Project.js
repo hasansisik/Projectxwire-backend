@@ -5,6 +5,7 @@ const ProjectSchema = new Schema(
   {
     projectName: { type: String, required: true },
     projectCode: { type: String },
+    projectCategory: { type: String },
     address: { type: String },
     phoneNumber: {
       type: String,
@@ -15,12 +16,11 @@ const ProjectSchema = new Schema(
         message: (props) => `${props.value} is not a valid phone number!`,
       },
     },
-    logo: {
-      type: String,
-      default:
-        "https://firebasestorage.googleapis.com/v0/b/projectxwire-e951a.appspot.com/o/logo-black.png?alt=media&token=d0bedb77-5329-4c92-8ed3-6270bb3fad7e",
-    },
     plans: [{ type: Schema.Types.ObjectId, ref: "Plan", default: [] }],
+    site: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Site",
+    },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",

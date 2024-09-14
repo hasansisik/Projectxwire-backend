@@ -6,7 +6,6 @@ const {
   updateProject,
   deleteProject
 } = require("../controllers/project");
-const { isAdmin } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
