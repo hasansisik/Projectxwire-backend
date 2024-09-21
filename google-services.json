@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "238622610992",
+    "project_id": "projectxwire-e951a",
+    "storage_bucket": "projectxwire-e951a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238622610992:android:fdc9c5a1bb914193cafff5",
+        "android_client_info": {
+          "package_name": "com.planwire.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbj54SzAB8_gdxGLWVQKe6br6PnNStOD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

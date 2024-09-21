@@ -5,7 +5,7 @@ const User = require("../models/User");
 const Plan = require("../models/Plan");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
-const sendNotification = require("../helpers/sendNotification");
+const sendFCMNotification = require("../helpers/sendFCMNotification");
 
 const createTask = async (req, res) => {
   const { taskCategory, taskTitle, taskDesc, taskCreator, persons, plan } =
@@ -47,13 +47,11 @@ const createTask = async (req, res) => {
       .populate("plan");
 
     // Notification Send
-    const message = `Yeni bir göreve eklendiniz: ${taskTitle}`;
-    (Array.isArray(persons) ? persons : [persons]).forEach(async (person) => {
+    const message = `Yeni görev oluşturuldu: ${taskTitle}`;
+    persons.forEach(async (person) => {
       const user = await User.findById(person);
       if (user && user.expoPushToken) {
-        await sendNotification(user.expoPushToken, message);
-      } else {
-        console.log("expoPushToken bulunamadı."); // Error handling
+        await sendFCMNotification(user.expoPushToken, message);
       }
     });
 
