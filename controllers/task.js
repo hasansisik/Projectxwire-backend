@@ -48,12 +48,14 @@ const createTask = async (req, res) => {
 
     // Notification Send
     const message = `Yeni görev oluşturuldu: ${taskTitle}`;
-    persons.forEach(async (person) => {
-      const user = await User.findById(person);
-      if (user && user.expoPushToken) {
-        await sendFCMNotification(user.expoPushToken, message);
-      }
-    });
+    if (Array.isArray(persons) && persons.length > 0) {
+      persons.forEach(async (person) => {
+        const user = await User.findById(person);
+        if (user && user.expoPushToken) {
+          await sendFCMNotification(user.expoPushToken, message);
+        }
+      });
+    }
 
     res.status(StatusCodes.CREATED).json(tasks);
   } catch (error) {
