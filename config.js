@@ -1,7 +1,7 @@
 const { initializeApp } = require("firebase/app");
 const { getStorage } = require("firebase/storage");
 const admin = require("firebase-admin");
-const serviceAccount = require("./projectxwire-admin-sdk.json"); 
+const serviceAccount = require("./projectxwire-e951a-firebase-adminsdk-lr3ig-8361e45759.json"); 
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmVWi3Rv1RQW3Zsj8YxBA39_raFdZYtaM",

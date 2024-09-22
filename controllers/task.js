@@ -45,16 +45,26 @@ const createTask = async (req, res) => {
       .populate("taskCreator")
       .populate("persons")
       .populate("plan");
-
     // Notification Send
     const message = `Yeni görev oluşturuldu: ${taskTitle}`;
-    if (Array.isArray(persons) && persons.length > 0) {
-      persons.forEach(async (person) => {
-        const user = await User.findById(person);
+    const personIds = Array.isArray(persons) ? persons : [persons];
+
+    if (personIds.length > 0) {
+      personIds.forEach(async (personId) => {
+        const user = await User.findById(personId);
+        console.log(user);
         if (user && user.expoPushToken) {
           await sendFCMNotification(user.expoPushToken, message);
+        } else {
+          console.log(
+            `Kullanıcıya bildirim gönderilemedi. Expo Push Token bulunamadı: ${personId}`
+          );
         }
       });
+    } else {
+      console.log(
+        "Kullanıcıya bildirim gönderilemedi. Expo Push Token bulunamadı."
+      );
     }
 
     res.status(StatusCodes.CREATED).json(tasks);
