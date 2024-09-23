@@ -5,7 +5,6 @@ const User = require("../models/User");
 const Plan = require("../models/Plan");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
-const sendFCMNotification = require("../helpers/sendFCMNotification");
 
 const createTask = async (req, res) => {
   const { taskCategory, taskTitle, taskDesc, taskCreator, persons, plan } =
