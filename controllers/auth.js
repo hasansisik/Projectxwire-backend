@@ -126,7 +126,7 @@ const login = async (req, res, next) => {
 
     if (!email || !password) {
       throw new CustomError.BadRequestError(
-        "Lütfen e-posta adresinizi, şifrenizi ve şirket ID'nizi girin"
+        "Lütfen e-posta adresinizi, şifrenizi girin"
       );
     }
     const user = await User.findOne({ email });
@@ -144,6 +144,12 @@ const login = async (req, res, next) => {
     if (!user.isVerified) {
       throw new CustomError.UnauthenticatedError(
         "Lütfen e-postanızı doğrulayın !"
+      );
+    }
+
+    if (!companyId) {
+      throw new CustomError.UnauthenticatedError(
+        "Şirket bilgisi bulunamadı, Lütfen giriş yapın."
       );
     }
 
