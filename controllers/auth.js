@@ -375,14 +375,24 @@ const editProfile = async (req, res) => {
   }
 };
 
-//All Users
+// All Users
 const allUsers = async (req, res) => {
-  const users = await User.find({ company: req.params.companyId });
+  const { companyId } = req.params;
 
-  res.json({
-    success: true,
-    users,
-  });
+  try {
+    const users = await User.find({ company: companyId }).populate("company");
+
+    res.json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    console.error("Kullanıcılar getirilemedi:", error);
+    res.status(500).json({
+      success: false,
+      message: "Kullanıcılar getirilemedi.",
+    });
+  }
 };
 
 //Send Notification
