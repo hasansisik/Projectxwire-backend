@@ -1,8 +1,8 @@
 const axios = require("axios");
 
-const sendNotification = async (expoPushToken, message) => {
+const sendNotification = async (oneSignalId, message) => {
   const payload = {
-    to: expoPushToken,
+    to: oneSignalId,
     sound: "default",
     title: "Yeni Görev",
     body: message,

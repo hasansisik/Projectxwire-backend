@@ -54,7 +54,7 @@ const UserSchema = new Schema(
     isVerified: { type: Boolean, default: false },
     passwordToken: { type: Number },
     passwordTokenExpirationDate: { type: String },
-    expoPushToken: { type: String },
+    oneSignalId: { type: String },
     status: {
       type: Boolean,
       default: false,

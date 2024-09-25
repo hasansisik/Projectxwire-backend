@@ -397,20 +397,20 @@ const allUsers = async (req, res) => {
 
 //Send Notification
 const sendPushNotification = async (req, res) => {
-  const { userId, expoPushToken } = req.body;
+  const { userId, oneSignalId } = req.body;
   try {
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "Kullanıcı bulunamadı." });
     }
 
-    user.expoPushToken = expoPushToken;
+    user.oneSignalId = oneSignalId;
     await user.save();
 
-    res.status(200).json({ message: "expoPushToken başarıyla güncellendi." });
+    res.status(200).json({ message: "oneSignalId başarıyla güncellendi." });
   } catch (error) {
-    console.error("expoPushToken güncellenemedi:", error);
-    res.status(500).json({ message: "expoPushToken güncellenemedi." });
+    console.error("oneSignalId güncellenemedi:", error);
+    res.status(500).json({ message: "oneSignalId güncellenemedi." });
   }
 };
 
