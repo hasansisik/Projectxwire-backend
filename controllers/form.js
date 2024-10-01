@@ -14,7 +14,12 @@ const createForm = async (req, res) => {
   const { formCategory, formTitle, formDescription, formPerson, formCreator } =
     req.body;
 
-  const project = await Project.findById(req.params.projectId);
+  const project = await Project.findById(req.params.projectId).populate("site");
+  if (!project) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ success: false, message: "Proje bulunamadı." });
+  }
   try {
     const formCreators = await User.findById(formCreator);
     const formPersons = await User.findById(formPerson);
@@ -47,7 +52,7 @@ const createForm = async (req, res) => {
     });
     doc.font("public/fonts/medium.otf");
 
-    const response = await axios.get(project.logo, {
+    const response = await axios.get(project.site.logo, {
       responseType: "arraybuffer",
     });
     const logoBuffer = Buffer.from(response.data, "binary");
