@@ -414,6 +414,27 @@ const sendPushNotification = async (req, res) => {
   }
 };
 
+//Delete User
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "Kullanıcı bulunamadı." });
+    }
+
+    await User.findByIdAndDelete(req.user.userId);
+    await Token.deleteMany({ user: req.user.userId });
+
+    res.clearCookie("refreshToken", { path: "/v1/auth/refreshtoken" });
+
+    res.json({ message: "Kullanıcı başarıyla silindi." });
+  } catch (error) {
+    console.error("Kullanıcı silinemedi:", error);
+    res.status(500).json({ message: "Kullanıcı silinemedi." });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -426,4 +447,5 @@ module.exports = {
   editProfile,
   allUsers,
   sendPushNotification,
+  deleteUser
 };

@@ -11,6 +11,7 @@ const {
   editProfile,
   allUsers,
   sendPushNotification,
+  deleteUser
 } = require("../controllers/auth");
 const { isAuthenticated } = require("../middleware/authMiddleware");
 
@@ -27,5 +28,6 @@ router.post("/again-email", againEmail);
 router.post("/edit-profile", isAuthenticated, editProfile);
 router.get("/users/:companyId",allUsers);
 router.post("/send-push-notification", sendPushNotification);
+router.delete("/delete-user", isAuthenticated, deleteUser);
 
 module.exports = router;
