@@ -1,4 +1,3 @@
-// models/Company.js
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
@@ -19,8 +18,24 @@ const companySchema = new mongoose.Schema({
   CompanyEmail: {
     type: String,
   },
-  CompanyAddress: String,
-  CompanyPhone: String,
+  CompanyAddress: {
+    type: String,
+  },
+  CompanyPhone: {
+    type: String,
+  },
+  website: {
+    type: String,
+  },
+  taxOffice: {
+    type: String,
+  },
+  taxId: {
+    type: String,
+  },
+  tradeRegistryNumber: {
+    type: String,
+  },
 });
 
 companySchema.pre("save", async function () {

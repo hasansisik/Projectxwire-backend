@@ -1,6 +1,4 @@
 const Company = require("../models/Company");
-const CustomError = require("../errors");
-const { StatusCodes } = require("http-status-codes");
 
 const companyRegister = async (req, res) => {
   const {
@@ -10,6 +8,10 @@ const companyRegister = async (req, res) => {
     CompanyEmail,
     CompanyAddress,
     CompanyPhone,
+    website,
+    taxOffice,
+    taxId,
+    tradeRegistryNumber,
   } = req.body;
 
   try {
@@ -20,6 +22,10 @@ const companyRegister = async (req, res) => {
       CompanyEmail,
       CompanyAddress,
       CompanyPhone,
+      website,
+      taxOffice,
+      taxId,
+      tradeRegistryNumber,
     });
 
     await company.save();
