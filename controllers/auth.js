@@ -214,11 +214,12 @@ const getMyProfile = async (req, res, next) => {
   });
 };
 
-//Logout
 const logout = async (req, res, next) => {
   try {
+    if (!req.user || !req.user.userId) {
+      return next(createHttpError.Unauthorized("User not authenticated"));
+    }
     await Token.findOneAndDelete({ user: req.user.userId });
-
     res.clearCookie("refreshtoken", { path: "/v1/auth/refreshtoken" });
 
     res.json({
