@@ -161,7 +161,7 @@ const login = async (req, res, next) => {
 
     const accessToken = await generateToken(
       { userId: user._id },
-      "1d",
+      "30d",
       process.env.ACCESS_TOKEN_SECRET
     );
     const refreshToken = await generateToken(
@@ -173,7 +173,7 @@ const login = async (req, res, next) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       path: "/v1/auth/refreshtoken",
-      maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
+      maxAge: 30 * 24 * 60 * 60 * 1000, 
     });
 
     const token = new Token({
@@ -214,6 +214,7 @@ const getMyProfile = async (req, res, next) => {
   });
 };
 
+//logout
 const logout = async (req, res, next) => {
   try {
     if (!req.user || !req.user.userId) {
